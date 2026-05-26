@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 const authRoutes = require('./routes/auth.routes');
+const githubRoutes = require('./routes/github.routes');
 
 //Middlewares
 app.use(express.json()); 
@@ -17,6 +18,7 @@ app.use(cors({
 
 //Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/github', githubRoutes);
 
 
 
