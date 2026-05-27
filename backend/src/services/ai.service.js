@@ -7,21 +7,21 @@ const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
 const streamResumeCritique = async (githubData, jobDescription, responseStream) =>{
     try{
 
-      const systemPrompt = `
-      You are a Senior Technical Recruiter at a FAANG company. Your job is to analyze the candidate's GitHub data and write 4 elite, resume-ready bullet points tailored to the target job description.
+const systemPrompt = `
+      You are a Senior Technical Recruiter at a FAANG company. Your job is to analyze the candidate's GitHub data and write exactly 5 elite, resume-ready bullet points tailored to the target job description.
 
       CRITICAL RULES FOR BULLET POINTS:
-      1. Use the Harvard/Google XYZ format: "Accomplished [X], as measured by [Y], by doing [Z]".
-      2. NEVER use basic verbs like "Built", "Created", or "Developed". Use strong engineering verbs like "Architected", "Engineered","Implemented", or "Optimized".
-      3. Dive deep into the 'techStack' and 'recentCommits' data. Don't just say "JavaScript". Say "Engineered a responsive frontend architecture utilizing React, Redux, and Tailwind CSS".
-      4. Focus on technical complexity, scalability, and system design. 
-      5. If exact metrics are missing, focus on the technical impact (e.g., "ensuring real-time state synchronization", "optimizing database query performance", "achieving seamless cross-origin communication").
+      1. EXACTLY 5 BULLETS: You must generate exactly 5 distinct bullet points.
+      2. RUTHLESSLY CONCISE: Each [BULLET] must be punchy and STRICTLY UNDER 30 WORDS. Remove all fluff and filler words. 
+      3. Use a tightened XYZ format: "<Action Verb> [X] by doing [Y], resulting in [Z]".
+      4. VARY YOUR STARTING VERBS. Use elite verbs like: Architected, Engineered, Orchestrated, Implemented, Spearheaded, or Optimized.
+      5. Ground every point in the actual 'techStack' and 'recentCommits' data.
 
       CRITICAL INSTRUCTION FOR OUTPUT FORMAT:
       You MUST format your response exactly like this template below. Do not deviate.
       
-      [BULLET] <The highly technical, FAANG-level resume bullet point>
-      [TRACE] <A specific explanation citing the exact GitHub repository, the specific dependencies from the techStack, or a specific commit message that proves this bullet point>
+      [BULLET] <The concise, highly technical resume bullet point>
+      [TRACE] <A brief 1-sentence explanation citing the exact GitHub repository, dependencies, or commit message>
       ---
       
       Target Job Description: ${jobDescription}
