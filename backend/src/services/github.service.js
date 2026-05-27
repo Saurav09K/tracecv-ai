@@ -16,8 +16,9 @@ const fetchUserRepositories = async (username) => {
     const reposWithContext = await Promise.all(baseRepos.map(async (repo) => {
       let meaningfulCommits = [];
       let readmeContent = 'No README available.';
+      let techStack = []; 
 
-      // FETCH COMMITS
+      //  FETCH COMMITS 
       try {
         const commitResponse = await axios.get(`https://api.github.com/repos/${username}/${repo.name}/commits`, {
           params: { per_page: 30 } 
@@ -34,9 +35,10 @@ const fetchUserRepositories = async (username) => {
           })
           .slice(0, 10);
       } catch (error) {
+       
       }
 
-      // FETCH README
+      //  FETCH README 
       try {
         const readmeResponse = await axios.get(`https://api.github.com/repos/${username}/${repo.name}/readme`, {
           headers: { Accept: 'application/vnd.github.v3.raw' } 
@@ -46,10 +48,29 @@ const fetchUserRepositories = async (username) => {
       } catch (error) {
       }
 
+      //  FETCH PACKAGE.JSON
+      try {
+        const packageResponse = await axios.get(`https://api.github.com/repos/${username}/${repo.name}/contents/package.json`, {
+          headers: { Accept: 'application/vnd.github.v3.raw' }
+        });
+        
+        const pkg = typeof packageResponse.data === 'string' 
+          ? JSON.parse(packageResponse.data) 
+          : packageResponse.data;
+
+        const deps = pkg.dependencies ? Object.keys(pkg.dependencies) : [];
+        const devDeps = pkg.devDependencies ? Object.keys(pkg.devDependencies) : [];
+
+        techStack = [...new Set([...deps, ...devDeps])];
+      } catch (error) {
+      
+      }
+
       return { 
         ...repo, 
         recentCommits: meaningfulCommits,
-        readme: readmeContent
+        readme: readmeContent,
+        techStack: techStack
       };
     }));
 
