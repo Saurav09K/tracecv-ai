@@ -6,6 +6,7 @@ const app = express();
 
 const authRoutes = require('./routes/auth.routes');
 const githubRoutes = require('./routes/github.routes');
+const aiRoutes = require('./routes/ai.routes'); 
 
 //Middlewares
 app.use(express.json()); 
@@ -19,6 +20,7 @@ app.use(cors({
 //Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/github', githubRoutes);
+app.use('/api/ai', aiRoutes); 
 
 
 
